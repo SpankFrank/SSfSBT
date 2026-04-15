@@ -62,7 +62,7 @@ def main():
     else:
         check_target_ids(df)
 
-    df.write_csv(args.nanosim_file, separator="\t", index=False)
+    df.write_csv(args.nanosim_file, separator="\t")
 
     print("##############################################")
     print("#    Simon says: Thanks for using SSfSBT!    #")
