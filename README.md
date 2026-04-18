@@ -31,6 +31,7 @@ lr_lordec_contam_filter | Filtering contamination from long reads corrected by [
 fa2fq                   | FASTA to FASTQ conversion with different error rates for upper and lower case denoted nucleotides
 fq2fa                   | FASTQ to FASTA conversion
 gfa2fa                  | GFA to FASTA conversion
+plot_msa                | Plotting multiple sequence alignments
 rnaQUASTcompare         | Merging multiple reports from rnaQUAST and compiling a plot
 sample                  | Subsampling a fixed number of sequences from FASTA/FASTQ-files
 unambiguous_codes       | Replacing ambiguity codes in FASTA/FASTQ-files
