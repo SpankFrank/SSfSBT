@@ -11,6 +11,7 @@ setup(
         'pandas',
         'polars',
         'seaborn',
+        'biopython'
         ],
     package_dir={"": "."},
     entry_points={
@@ -24,7 +25,8 @@ setup(
                 "rnaQUASTcompare=rnaQUASTcompare:main",
                 "lr_lordec_contam_filter=lr_lordec_contam_filter:main",
                 "busco_find=busco_find:main",
-                "gfa2fa=gfa2fa:main"
+                "gfa2fa=gfa2fa:main",
+                "plot_msa=plot_msa:main"
             ],
         },
 )
