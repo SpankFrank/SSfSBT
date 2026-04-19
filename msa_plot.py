@@ -33,7 +33,7 @@ class MyArgumentParser(ArgumentParser):
         self.add_argument("-e", "--end",
                           metavar   = "",
                           type      = int,
-                          default   = 999_999_999,
+                          default   = 999_999,
                           help      = "End of the section you want to show (default: alignment end)")
         self.add_argument("-r", "--row_length",
                           metavar   = "",
@@ -141,30 +141,37 @@ def plot_alignment(msa_section:     list[str],
     
 def main():
     
-    # 1. Obtaining Plot parameters
-    
     args        = MyArgumentParser().parse_args()
     
-    print("Loading alignment ...")
+    print("1. Loading alignment ...")
     msa         = load_msa(args.msa)
-    print("Done!")
+    print("\tDone!")
     
+    fig, axes = pyplot.subplots()
     
-    names       = [entry.name.replace("_", " ") for entry in msa]
-    start       = args.start -1
-    end         = min(args.end,len(msa[0].seq)) -1
-    row_length  = min(args.row_length, end - start)
-    n_rows      = int((end - start) / row_length)+1
-    color_value = load_color_values(args.color_value)
+    color_value   = load_color_values(args.color_value)
+    names         = [entry.name.replace("_", " ") for entry in msa]
+    start         = max(args.start, 1) - 1
+    end           = min(len(msa[0]), args.end) - 1
+    row_length    = min(args.row_length, end-start)
+    n_rows        = int((min(end,len(msa[0])) - start-1) / row_length) + 1
+    section_start = start
+    section_end   = min(section_start+args.row_length,args.end) - 1
     
-    # 2. Plotting
+    print("2. Calculating plot parameters")
+    print(f"\tStart:      {start+1}")
+    print(f"\tEnd:        {end+1}")
+    print(f"\tRow length: {row_length}")
+    print(f"\tRows:       {n_rows}")
+    
+    # Plotting
     # Longer multiple sequence alignments are divided into several sections and displayed
     # one below the other. There are three subplots for each section: 
     # a) Showing the conservation
     # b) Showing the alignment
     # c) An empty place-holder plot
     
-    print("Plotting ...")
+    print("3. Plotting ...")
     
     fig, axes = pyplot.subplots(3*n_rows, 1,
                                 figsize       = (15,n_rows*5),
@@ -172,23 +179,21 @@ def main():
     
     for i in range(n_rows):
         
-        section_start = start + row_length*i
-        section_end   = min(((i+1)*row_length-1),len(msa[0].seq)-1)
+        print(f"\tProcessing section {i+1} / {n_rows} (Positions {section_start+1:>4}-{min(section_end,args.end)+1:>4})")
+        
         msa_section   = [[c for c in entry.seq[section_start:section_end+1]] for entry in msa]
         
-        print(f"\tProcessing section {i+1} / {n_rows} (Positions {section_start:>4}-{min(section_end, end):>4})")
-        
-        if len(msa_section) < row_length:
-            for entry in msa:
-                entry.seq += "".join(["-" for _ in range(row_length-len(msa_section))])
-            
+        if len(msa_section[0]) < row_length:
+            for sequence in msa_section:
+                sequence += ["-" for _ in range(row_length-len(msa_section[-1])-1)]
+                
         plot_conservation(msa_section, axes[3*i])
         plot_alignment(msa_section,
                        axes[3*i+1],
                        names,
                        section_start,
                        section_end,
-                       end,
+                       args.end,
                        args.color_map,
                        color_value,
                        args.font_style)
@@ -196,12 +201,15 @@ def main():
             axes[3*i+1].get_yticklabels()[-1].set_fontweight("bold")
         axes[3*i+2].axis("off")
         
-    print("Done!")
-    print("Saving ...")
+        section_start = section_end + 1
+        section_end   = min(section_end + row_length, args.end)
+
+    print("\tDone!")
+    print("4. Saving ...")
         
     pyplot.savefig(f"{args.msa}.ssfsbt_msa.{args.output_format}", bbox_inches='tight')
     
-    print("Done!\n")
+    print("\tDone!\n")
     print("##############################################")
     print("#    Simon says: Thanks for using SSfSBT!    #")
     print("##############################################")
