@@ -147,8 +147,6 @@ def main():
     msa         = load_msa(args.msa)
     print("\tDone!")
     
-    fig, axes = pyplot.subplots()
-    
     color_value   = load_color_values(args.color_value)
     names         = [entry.name.replace("_", " ") for entry in msa]
     start         = max(args.start, 1) - 1
@@ -193,7 +191,7 @@ def main():
                        names,
                        section_start,
                        section_end,
-                       args.end,
+                       end,
                        args.color_map,
                        color_value,
                        args.font_style)
