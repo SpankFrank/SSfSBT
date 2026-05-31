@@ -10,9 +10,8 @@ class MyArgumentParser(ArgumentParser):
 
     description =   """
                     A simple script facilitating the filtering contaminations from
-                    long reads corrected with LoRDEC using Kraken2-filtered short reads.
-                    
-                    (It removes long reads that were not corrected by LoRDEC)
+                    long reads or transcripts corrected with LoRDEC using Kraken2-filtered
+                    short reads.
                     """
     
     def __init__(self) -> None:
@@ -22,7 +21,7 @@ class MyArgumentParser(ArgumentParser):
         self.add_argument("longreads")
         self.add_argument("-v",
                           metavar="",
-                          help="Report progress every v processed long reads [default: 100,000]",
+                          help="Report progress every v processed long reads [default: 100.000]",
                           default=100_000)
         
         fo = self.add_argument_group("Filtering options")
