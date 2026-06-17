@@ -29,7 +29,7 @@ class MyArgumentParser(ArgumentParser):
         fo.add_argument("-mbc","--min_bases_corrected",
                         type=int,
                         default=21)
-        fo.add_argument("mbu","--max_bases_uncorrected",
+        fo.add_argument("-mbu","--max_bases_uncorrected",
                         type=int,
                         default=inf)
         fo.add_argument("-mfc","--min_fraction_corrected",
@@ -101,6 +101,6 @@ def main():
     print("#    Simon says: Thanks for using SSfSBT!    #")
     print("##############################################")
 
-if __name__ == "__main_":
+if __name__ == "__main__":
 
     main()
