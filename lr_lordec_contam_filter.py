@@ -86,7 +86,7 @@ def main():
     reads_rejected = len(rejected)
     reads_total    = reads_accepted + reads_rejected
 
-    print("##################################################################################")
+    print("##############################################")
     print(f"Reads accepted:     {reads_accepted:>10} ({(reads_accepted/reads_total)*100:.3f}%)")
     print(f"Reads rejected:     {reads_rejected:>10} ({(reads_rejected/reads_total)*100:.3f}%)")
     print()
